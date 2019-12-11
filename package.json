@@ -1,0 +1,14 @@
+{
+  "name": "liveblog",
+  "version": "1.0.0",
+  "description": "",
+  "main": ".eleventy.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@11ty/eleventy": "^0.9.0"
+  }
+}

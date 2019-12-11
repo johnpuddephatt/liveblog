@@ -1,0 +1,33 @@
+---
+title: Home
+layout: layouts/default.html
+pagination:
+  data: collections.posts
+  size: 6
+  alias: posts
+  reverse: true
+---
+<div class="columns is-centered">
+  <div class="column is-two-thirds-desktop posts-container">
+
+    {% for post in posts %}
+      {% include components/post.html %}
+    {% endfor %}
+
+    </div>
+  </div>
+
+  <h2 id="pagination-title">Pages</h2>
+  <nav aria-labelledby="pagination-title" class="pagination is-rounded" role="navigation" aria-label="pagination">
+
+    <ul class="pagination-list">
+      {%- for pageEntry in pagination.hrefs %}
+        <li><a class="pagination-link {% if page.url == pageEntry %}is-current{% endif %}" aria-label="Page {{ forloop.index }}" href="{{ pageEntry}}"{% if page.url == pageEntry %} aria-current="page"{% endif %}>{{ forloop.index }}</a></li>
+      {%- endfor %}
+    </ul>
+    {% if pagination.previousPageHref %}<a class="pagination-previous" href="{{ pagination.previousPageHref }}">«</a>{% else %}<div class="pagination-previous">«</div>{% endif %}
+    {% if pagination.nextPageHref %}<a class="pagination-next" href="{{ pagination.nextPageHref }}">»</a>{% else %}<div class="pagination-next">»</div>{% endif %}
+
+  </nav>
+
+</div>

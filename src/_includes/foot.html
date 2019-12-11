@@ -1,0 +1,63 @@
+    <script>
+      if (window.netlifyIdentity) {
+        window.netlifyIdentity.on("init", user => {
+          if (!user) {
+            window.netlifyIdentity.on("login", () => {
+              document.location.href = "/admin/";
+            });
+          }
+        });
+      }
+
+      var currentCount = {{ collections.posts | size }};
+      const postsContainer= document.querySelector('.posts-container');
+
+      var request = new XMLHttpRequest();
+
+      request.onload = function() {
+        if (this.status >= 200 && this.status < 400) {
+          // Success!
+          var data = JSON.parse(this.response);
+          if (data.count > currentCount) {
+            var newPostCount = data.count - currentCount;
+            for (var i = newPostCount; i > 0; i--) {
+              getNewPost(data.count - i + 1);
+            }
+            currentCount = data.count;
+          }
+        } else {
+          // We reached our target server, but it returned an error
+          console.log('reached server. got error');
+        }
+      };
+
+      request.onerror = function() {
+        console.log('Connection error');
+      };
+
+      setInterval(()=>{
+        request.open('GET', '/count.json', true);
+        request.send();
+      }, 3000)
+
+      const getNewPost = (id) => {
+        var request = new XMLHttpRequest();
+        request.onload = function() {
+          if (this.status >= 200 && this.status < 400) {
+            // Success!
+            postsContainer.insertAdjacentHTML('afterbegin', this.response);
+          } else {
+             // We reached our target server, but it returned an error
+             console.log('reached server. got error');
+           }
+         }
+         request.open('GET', `/posts/${id}.html`, true);
+         request.send();
+         request.onerror = function() {
+           console.log('Connection error');
+         };
+      }
+    </script>
+
+  </body>
+</html>
